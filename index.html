@@ -1,1 +1,40 @@
-My Page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title> JS Promises </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--<script src="main.js"> </script>-->
+    <script> 
+    function get(url) {
+    return new Promise(function(resolve, reject){
+        var req = new XMLHttpRequest(); 
+        req.open('GET', url);
+
+        req.onload = function()  {
+            //Called even on 404
+            if (req.status == 200) {
+                resolve(req.response);
+            } else {
+                reject(Error(req.statusText));
+            }
+        }
+
+        req.onerror = function() {
+            reject(Error('Network Error'));
+        }
+
+        //Make request
+        req.send(); 
+    })
+}
+        get('some.json').then(function(response) {
+            console.log('Success', response);
+        }, function(error) {
+            console.error('Failed', error);
+        });
+    </script>
+</body>
+</html>
